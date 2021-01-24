@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
   constructor(props) {
@@ -13,17 +14,18 @@ class App extends Component {
 
   // test case for backend API initialization
   testAPI() {
-    fetch("http://localhost:3001/testAPI")
+    fetch("http://localhost:3001/testAPIConnection")
             .then(res => res.text())
             .then(res => this.setState({ testAPIres: res }))
             .catch(err => err);
-    // axios.get('localhost:3001/testAPI')
-    //   .then(res => {
-    //     this.setState({ testAPIres: res });
-    //   })
-    //   .catch(err => {
-    //     console.log('Error when calling /testAPI: ', err);
-    //   })
+  }
+
+  clickBtn() {
+    console.log('clicked')
+    fetch("http://localhost:3001/testMongoDBConnection")
+            .then(res => res.text())
+            .then(res => console.log('DBconnect result: ', res))
+            .catch(err => err);
   }
 
   componentDidMount() {
@@ -38,14 +40,7 @@ class App extends Component {
           <p>
             API result: {this.state.testAPIres}
           </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <Button variant="light" onClick={this.clickBtn}> Click me! </Button>
         </header>
       </div>
     );

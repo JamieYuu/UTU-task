@@ -5,8 +5,15 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
 
+const mongoose = require('mongoose');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+const {
+  testAPIConnection,
+  testMongoDBConnection,
+} = require('./routes/testAPI');
 
 // Test case for backend API initialization
 var testAPIRouter = require('./routes/testAPI');
@@ -28,7 +35,23 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // Test case for backend API initialization
-app.use('/testAPI', testAPIRouter);
+app.use('/testAPIConnection', testAPIConnection);
+app.use('/testMongoDBConnection', testMongoDBConnection);
+
+mongoose.connect('mongodb+srv://jiazhengyu:Yjz1008936@cluster0.amvan.mongodb.net/test?authSource=admin&replicaSet=atlas-y5wq66-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true',
+  {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  },
+  (err) => {
+    if (err) {
+      console.log('Get error when connecting to MongoDB: ', err)
+    } else {
+      console.log('MongoDB connected')
+    }
+  });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
