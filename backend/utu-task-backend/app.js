@@ -13,10 +13,12 @@ var usersRouter = require('./routes/users');
 const {
   testAPIConnection,
   testMongoDBConnection,
-} = require('./routes/testAPI');
+  insertData,
+  getDataByFilter,
+} = require('./routes/taskAPI');
 
 // Test case for backend API initialization
-var testAPIRouter = require('./routes/testAPI');
+var testAPIRouter = require('./routes/taskAPI');
 
 var app = express();
 
@@ -37,6 +39,8 @@ app.use('/users', usersRouter);
 // Test case for backend API initialization
 app.use('/testAPIConnection', testAPIConnection);
 app.use('/testMongoDBConnection', testMongoDBConnection);
+app.use('/insertData', insertData);
+app.use('/getDataByFilter', getDataByFilter);
 
 mongoose.connect('mongodb+srv://jiazhengyu:Yjz1008936@cluster0.amvan.mongodb.net/test?authSource=admin&replicaSet=atlas-y5wq66-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true',
   {
