@@ -1,15 +1,24 @@
+/*
+This file contains the APIs for the web application, including
+testing APIs and functional APIs.
+*/
+
 var express = require('express');
 var router = express.Router();
 
 var MongoClient = require("mongodb").MongoClient;
 const url = 'mongodb+srv://jiazhengyu:Yjz1008936@cluster0.amvan.mongodb.net/test?authSource=admin&replicaSet=atlas-y5wq66-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true';
 
-const dbCollections = ['bitcoin', 'bitcoin-cash', 'bnb', 'cardano', 'eos', 'ehereum', 'litecoin', 'stellar', 'tether', 'tezos', 'xrp'];
-
+// API for testing the connection between frontend and backend server
+// If the API been called successfully, a string message will be returned to
+// the frontend.
 const testAPIConnection = (req, res, next) => {
   res.status(200).json('API is working properly!!');
 };
 
+// API for testing the connection of the database
+// If the API been called successfully, a line of data will be insert
+// into the collection 'testCase' in the database
 const testMongoDBConnection = async (req, res, next) => {
   await MongoClient.connect(url, function (err, db) {
       if (err) throw err;
@@ -24,16 +33,20 @@ const testMongoDBConnection = async (req, res, next) => {
   });
 };
 
+// API for insert data into the database
+// This API will be called when user import CSV file in the frontend
 const insertData = async (req, res, next) => {
   const currencyType = req.body.data.currencyType
   const dataSets = req.body.data.dataSets
 
   var processedDataSets = []
 
+  // Pre-process the data
   for (var i=0; i < currencyType.length; i++) {
     var pDataSet = []
     const oDataSet = dataSets[i]
 
+    // Calculate the 24 hours, weekly and monthly difference
     oDataSet.forEach((item, index) => {
       var dayDif = ((item[5] - item[2])/item[2]) * 100
       var weekDif = '-'
@@ -74,6 +87,7 @@ const insertData = async (req, res, next) => {
 
   var allProcessedData = [].concat.apply([], processedDataSets)
 
+  // Insert into the collection 'currencies' in the database
   await MongoClient.connect(url, function (err, db) {
       if (err) throw err;
       var dbo = db.db("UTU-task");
@@ -87,10 +101,12 @@ const insertData = async (req, res, next) => {
   });
 };
 
+// API for read data from the database by filters
 const getDataByFilter = async (req, res, next) => {
   const filter = parseInt(req.query.filter)
   const currentDate = new Date('Dec 04, 2019')
 
+  // Filtering data by 24 hours, 7 days and 30 days
   var period = 0
   switch (filter) {
     case 1:
@@ -105,7 +121,7 @@ const getDataByFilter = async (req, res, next) => {
 
   var filteredSet = [];
 
-  //(currentDate.getTime() - tempDate.getTime())/(24 * 60 * 60 * 1000) <= period
+  // Access the database
   await MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("UTU-task");

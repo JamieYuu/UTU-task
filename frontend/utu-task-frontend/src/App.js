@@ -24,13 +24,14 @@ class App extends Component {
     };
   }
 
+  // Function handle the open dialog situation
   handleOpenDialog = (e) => {
-    // Note that the ref is set async, so it might be null at some point
     if (buttonRef.current) {
       buttonRef.current.open(e)
     }
   }
 
+  // Function handle the file load situation
   handleOnFileLoad = (data) => {
     var currencyType = [];
     var dataSets = [];
@@ -38,6 +39,8 @@ class App extends Component {
     for (var i=1; i<data.length-1; i++) {
       var targetData = data[i].data
       targetData[1] = new Date(targetData[1])
+
+      // Convert string into integer or float
       for (var a=2; a<6; a++) {
         targetData[a] = parseFloat(targetData[a].replaceAll(',', ''))
       }
@@ -58,21 +61,25 @@ class App extends Component {
     this.setState({ insertData: udpateData});
   };
 
+  // Function handles error when load file
   handleOnError = (err, file, inputElem, reason) => {
     console.log('Error occurs: ', err);
   };
 
+  // Function handles remove file
   handleOnRemoveFile = (data) => {
     console.log('File removed');
   };
 
+  // Function handles remove file
   handleRemoveFile = (e) => {
-    // Note that the ref is set async, so it might be null at some point
     if (buttonRef.current) {
       buttonRef.current.removeFile(e);
+      this.setState({ insertData: null })
     }
   };
 
+  // Function handles click update Button event
   handleinsertData = () => {
     if (this.state.insertData == null) {
       this.setState({ show: true })
@@ -99,6 +106,7 @@ class App extends Component {
     }
   };
 
+  // Function handles calling backend API to read data event
   handleGetData = () => {
     try {
       axios({
@@ -123,6 +131,7 @@ class App extends Component {
     }
   }
 
+  // Function handles filter change event
   handleFilterChange = (e) => {
     if (e != this.state.filter) {
       this.setState({ filter: e}, () => {
@@ -131,7 +140,7 @@ class App extends Component {
     }
   }
 
-  // test case for backend API initialization
+  // Test case for backend API initialization
   testAPI() {
     fetch("http://localhost:3001/testAPIConnection")
             .then(res => res.text())
@@ -152,6 +161,7 @@ class App extends Component {
 
     this.testAPI();
 
+    // Dummy data for testing the performance of table component
     // const testTableData = [
     //   { currencyName: 'tezos', currencyPrice: '1.25', curDayChange: '1%', curWeekChange: '-2%', curDayVolume: '1234', curMarketCap: '4321'},
     //   { currencyName: 'eos', currencyPrice: '1.33', curDayChange: '-1.2%', curWeekChange: '3.5%', curDayVolume: '7890', curMarketCap: '6789'}
@@ -159,15 +169,18 @@ class App extends Component {
     // this.setState({ tableData: testTableData })
   }
 
+  // Convert date format
   getDateFormate(dateStr) {
     var date = new Date(dateStr)
     return date.toDateString()
   }
 
+  // Convert float formate
   getPercentFormate(value) {
     return parseFloat(value).toFixed(2);
   }
 
+  // Convert integer to pretty string
   getNumberWithCommas(value) {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -175,7 +188,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h2> UTU-task </h2>
+        <h2> UTU-Interview task </h2>
         {/*<p>
           API result: {this.state.testAPIres}
         </p>*/}

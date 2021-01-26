@@ -42,6 +42,7 @@ app.use('/testMongoDBConnection', testMongoDBConnection);
 app.use('/insertData', insertData);
 app.use('/getDataByFilter', getDataByFilter);
 
+// Check mongooDB connection when starting the backend server
 mongoose.connect('mongodb+srv://jiazhengyu:Yjz1008936@cluster0.amvan.mongodb.net/test?authSource=admin&replicaSet=atlas-y5wq66-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true',
   {
     useNewUrlParser: true,
@@ -53,7 +54,7 @@ mongoose.connect('mongodb+srv://jiazhengyu:Yjz1008936@cluster0.amvan.mongodb.net
     if (err) {
       console.log('Get error when connecting to MongoDB: ', err)
     } else {
-      console.log('MongoDB connected')
+      console.log('MongoDB connected successfully')
     }
   });
 
