@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Alert from 'react-bootstrap/Alert';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CSVReader } from 'react-papaparse';
@@ -87,13 +86,13 @@ class App extends Component {
       try {
         axios({
           method: "post",
-          url: 'http://localhost:3001/insertData',
+          url: 'http://' + window.location.hostname + ':3001/insertData',
           data: {
             data: this.state.insertData,
           },
         })
           .then((result) => {
-            if (result.status == 200) {
+            if (result.status === 200) {
               window.location.reload()
             }
           })
@@ -111,7 +110,7 @@ class App extends Component {
     try {
       axios({
         method: "get",
-        url: 'http://localhost:3001/getDataByFilter',
+        url: 'http://' +window.location.hostname + ':3001/getDataByFilter',
         params: {
           filter: this.state.filter,
         },
@@ -133,7 +132,7 @@ class App extends Component {
 
   // Function handles filter change event
   handleFilterChange = (e) => {
-    if (e != this.state.filter) {
+    if (e !== this.state.filter) {
       this.setState({ filter: e}, () => {
         this.handleGetData()
       })
@@ -142,7 +141,7 @@ class App extends Component {
 
   // Test case for backend API initialization
   testAPI() {
-    fetch("http://localhost:3001/testAPIConnection")
+    fetch('http://' +window.location.hostname + ":3001/testAPIConnection")
             .then(res => res.text())
             .then(res => this.setState({ testAPIres: res }))
             .catch(err => console.log('err', err));
@@ -248,7 +247,7 @@ class App extends Component {
           )}
         </CSVReader>
 
-        {this.state.show==false ? (<spam></spam>) : (
+        {this.state.show===false ? (<div></div>) : (
           <Alert variant='danger'>
             No CSV file selected!
           </Alert>
