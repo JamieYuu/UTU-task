@@ -134,7 +134,7 @@ const getDataByFilter = async (req, res, next) => {
           var filteredData = []
           for (var i=0; i<result.length; i++) {
             var tempDate = new Date(result[i].date)
-            if ((currentDate.getTime() - tempDate.getTime())/(24 * 60 * 60 * 1000) <= period) {
+            if ((currentDate.getTime() - tempDate.getTime())/(24 * 60 * 60 * 1000) < period+1) {
               filteredData.push(result[i])
             }
           }
