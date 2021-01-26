@@ -1,4 +1,5 @@
 # UTU-Interview task
+@Author: Jiazheng Yu
 
 The web application is using MERN stack, which includes React, NodeJs, Express and MongoDB
 
